@@ -6,7 +6,10 @@ const Schema = mongoose.Schema;
 const DataSchema = new Schema(
   {
     id: Number,
-    message: String
+    userId: Number,
+    sourceArtworkId: Number,
+    ratedArtworkId: Number,
+    rating: String
   },
   { timestamps: true }
 );
