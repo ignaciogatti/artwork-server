@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const DataSchema = new Schema(
   {
     id: Number,
-    userId: Number,
+    userId: String,
     sourceArtworkId: Number,
     ratedArtworkId: Number,
     rating: String

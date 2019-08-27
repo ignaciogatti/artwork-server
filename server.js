@@ -4,15 +4,16 @@ var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const Data = require('./data');
+const env = yenv('app.yaml')
 
-const API_PORT = 3001;
+const API_PORT = process.env.PORT || 3001;
+
 const app = express();
 app.use(cors());
 const router = express.Router();
 
 // this is our MongoDB database
-const dbRoute =
-  'mongodb+srv://admin:qsRaxTMgTha6@artworkcluster-vwxbu.gcp.mongodb.net/test?retryWrites=true&w=majority';
+const dbRoute = env.MONGODB_CONNECTION;
 
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
@@ -35,6 +36,17 @@ app.use(logger('dev'));
 router.get('/getData', (req, res) => {
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
+
+// this is our getUserRatings method
+// this method fetches all available ratings for a user in our database
+router.get('/getUserRatings/:userId', (req, res) => {
+  const { userId } = req.params;
+  Data.find({ userId : userId }, 'userId sourceArtworkId ratedArtworkId',(err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    console.log(data);
     return res.json({ success: true, data: data });
   });
 });
@@ -72,7 +84,8 @@ router.post('/putData', (req, res) => {
       error: 'INVALID INPUTS',
     });
   }
-  data.userId = userId;
+
+  data.userId = userId.toString();
   data.sourceArtworkId = sourceArtworkId;
   data.ratedArtworkId = ratedArtworkId;
   data.rating = rating;
