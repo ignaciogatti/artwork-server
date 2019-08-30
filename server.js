@@ -4,7 +4,7 @@ var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const Data = require('./data');
-const env = yenv('app.yaml')
+
 
 const API_PORT = process.env.PORT || 3001;
 
@@ -13,7 +13,7 @@ app.use(cors());
 const router = express.Router();
 
 // this is our MongoDB database
-const dbRoute = env.MONGODB_CONNECTION;
+const dbRoute = process.env.MONGODB_CONNECTION;
 
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
@@ -46,7 +46,6 @@ router.get('/getUserRatings/:userId', (req, res) => {
   const { userId } = req.params;
   Data.find({ userId : userId }, 'userId sourceArtworkId ratedArtworkId',(err, data) => {
     if (err) return res.json({ success: false, error: err });
-    console.log(data);
     return res.json({ success: true, data: data });
   });
 });
@@ -92,7 +91,15 @@ router.post('/putData', (req, res) => {
   data.id = id;
   data.save((err) => {
     if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, ratedArtworkId: ratedArtworkId });
+    return res.json({ 
+      success: true, 
+      data: {
+        _id: data._id,
+        userId: data.userId,
+        sourceArtworkId: data.sourceArtworkId,
+        ratedArtworkId: data.ratedArtworkId
+      } 
+    });
   });
 });
 
