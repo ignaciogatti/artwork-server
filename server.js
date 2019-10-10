@@ -70,14 +70,14 @@ router.delete('/deleteData', (req, res) => {
   });
 });
 
-// this is our create methid
+// this is our create method
 // this method adds new data in our database
 router.post('/putData', (req, res) => {
   let data = new Data();
 
-  const { id, userId, rating, sourceArtworkId, ratedArtworkId } = req.body;
+  const { id, userId, rating, sourceArtworkId, ratedArtworkId, experimentType } = req.body;
 
-  if ((!id && id !== 0) || !userId || !rating || !sourceArtworkId || !ratedArtworkId) {
+  if ((!id && id !== 0) || !userId || !rating || !sourceArtworkId || !ratedArtworkId || !experimentType) {
     return res.json({
       success: false,
       error: 'INVALID INPUTS',
@@ -88,6 +88,7 @@ router.post('/putData', (req, res) => {
   data.sourceArtworkId = sourceArtworkId;
   data.ratedArtworkId = ratedArtworkId;
   data.rating = rating;
+  data.experimentType = experimentType;
   data.id = id;
   data.save((err) => {
     if (err) return res.json({ success: false, error: err });
