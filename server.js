@@ -44,7 +44,7 @@ router.get('/getData', (req, res) => {
 // this method fetches all available ratings for a user in our database
 router.get('/getUserRatings/:userId', (req, res) => {
   const { userId } = req.params;
-  Data.find({ userId : userId }, 'userId sourceArtworkId ratedArtworkId',(err, data) => {
+  Data.find({ userId : userId }, 'userId sourceArtworkId ratedArtworkId experimentType',(err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
@@ -98,7 +98,8 @@ router.post('/putData', (req, res) => {
         _id: data._id,
         userId: data.userId,
         sourceArtworkId: data.sourceArtworkId,
-        ratedArtworkId: data.ratedArtworkId
+        ratedArtworkId: data.ratedArtworkId,
+        experimentType: data.experimentType
       } 
     });
   });
