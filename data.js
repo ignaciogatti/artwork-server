@@ -5,10 +5,9 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure 
 const DataSchema = new Schema(
   {
-    id: Number,
     userId: String,
-    sourceArtworkId: Number,
-    ratedArtworkId: Number,
+    sourceArtworkId: String,
+    ratedArtworkId: String,
     experimentType: String,
     rating: String
   },

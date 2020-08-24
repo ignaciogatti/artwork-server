@@ -15,6 +15,7 @@ const router = express.Router();
 // this is our MongoDB database
 const dbRoute = process.env.MONGODB_CONNECTION;
 
+
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
@@ -75,9 +76,9 @@ router.delete('/deleteData', (req, res) => {
 router.post('/putData', (req, res) => {
   let data = new Data();
 
-  const { id, userId, rating, sourceArtworkId, ratedArtworkId, experimentType } = req.body;
+  const { userId, rating, sourceArtworkId, ratedArtworkId, experimentType } = req.body;
 
-  if ((!id && id !== 0) || !userId || !rating || !sourceArtworkId || !ratedArtworkId || !experimentType) {
+  if (!userId || !rating || !sourceArtworkId || !ratedArtworkId || !experimentType) {
     return res.json({
       success: false,
       error: 'INVALID INPUTS',
@@ -89,13 +90,12 @@ router.post('/putData', (req, res) => {
   data.ratedArtworkId = ratedArtworkId;
   data.rating = rating;
   data.experimentType = experimentType;
-  data.id = id;
+
   data.save((err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ 
       success: true, 
       data: {
-        _id: data._id,
         userId: data.userId,
         sourceArtworkId: data.sourceArtworkId,
         ratedArtworkId: data.ratedArtworkId,
