@@ -9,4 +9,4 @@
 #Files with DB Connection
 
 app.yaml
-mongoConnection.txt
+mongoConnection.json
