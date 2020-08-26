@@ -9,6 +9,7 @@ const DataSchema = new Schema(
     sourceArtworkId: String,
     ratedArtworkId: String,
     experimentType: String,
+    tourApproach: String,
     rating: String
   },
   { timestamps: true }
