@@ -14,8 +14,8 @@ getData = (req, res) => {
   // this method fetches all available ratings for a user in our database
 getUserRatings = (req, res) => {
 
-    const { userId, tourApproach } = req.params;
-    Data.find({ userId : userId, tourApproach : tourApproach }, 'userId sourceArtworkId ratedArtworkId experimentType',(err, data) => {
+    const { userId } = req.params;
+    Data.find({ userId : userId }, 'userId sourceArtworkId ratedArtworkId experimentType tourApproach',(err, data) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: data });
     });
